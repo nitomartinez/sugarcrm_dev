@@ -158,10 +158,10 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
 					$user_uid = $info[0][$group_user_attr];
 				}
 				//user is not a member of the group if the count is zero get the logs and return no id so it fails login
-				if(!isset($user_uid[0]) || ldap_count_entries($ldapconn, ldap_search($ldapconn,$GLOBALS['ldap_config']->settings['ldap_group_name'] . ",". $GLOBALS['ldap_config']->settings['ldap_group_dn']  ,"($group_attr=" . $user_uid[0] . ")")) ==  0){
+				if(!isset($user_uid) || ldap_count_entries($ldapconn, ldap_search($ldapconn,$GLOBALS['ldap_config']->settings['ldap_group_name'] . ",". $GLOBALS['ldap_config']->settings['ldap_group_dn']  ,"($group_attr=" . $user_uid . ")")) ==  0){
 					$GLOBALS['log']->fatal("ldapauth: User ($name) is not a member of the LDAP group");
 					$user_id = var_export($user_uid, true);
-					$GLOBALS['log']->debug("ldapauth: Group DN:{$GLOBALS['ldap_config']->settings['ldap_group_dn']} Group Name: " . $GLOBALS['ldap_config']->settings['ldap_group_name']  . " Group Attribute: $group_attr  User Attribute: $group_user_attr :(" . $user_uid[0] . ")");
+					$GLOBALS['log']->debug("ldapauth: Group DN:{$GLOBALS['ldap_config']->settings['ldap_group_dn']} Group Name: " . $GLOBALS['ldap_config']->settings['ldap_group_name']  . " Group Attribute: $group_attr  User Attribute: $group_user_attr :(" . $user_uid . ")");
 					ldap_close($ldapconn);
 					return '';
 				}
